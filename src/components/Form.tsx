@@ -76,6 +76,7 @@ const Form = () => {
     const deleteSeries = (current: any) =>
       current.filter((item: Results) => item.id !== id);
     setSeries(deleteSeries);
+    localStorage.removeItem("series");
   };
 
   useEffect(() => {
