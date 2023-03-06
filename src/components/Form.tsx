@@ -28,7 +28,7 @@ const Form = () => {
       episode: 0,
     };
 
-    setSeries((current: any): any => [obj, ...current]);
+    setSeries((current: any): any => [...current, obj]);
     setText("");
   };
 
