@@ -16,6 +16,8 @@ const Form = () => {
     setText(e.target.value);
   };
 
+  console.log(text.length);
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -26,8 +28,12 @@ const Form = () => {
       episode: 0,
     };
 
-    setSeries((current: any): any => [obj, ...current]);
-    setText("");
+    if (text.length <= 0) {
+      alert("enter text");
+    } else {
+      setSeries((current: any): any => [obj, ...current]);
+      setText("");
+    }
   };
 
   const increaseSeason = (id: string) => {
