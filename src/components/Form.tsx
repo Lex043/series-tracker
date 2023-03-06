@@ -80,7 +80,7 @@ const Form = () => {
   };
 
   useEffect(() => {
-    if (series.length > 0) {
+    if (series && series.length > 0) {
       localStorage.setItem("series", JSON.stringify(series));
     }
   }, [series]);
@@ -89,8 +89,6 @@ const Form = () => {
     const data = localStorage.getItem("series");
     if (data) setSeries(JSON.parse(data));
   }, []);
-
-  console.log(series);
 
   return (
     <section>
