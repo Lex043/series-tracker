@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import uuid from "react-uuid";
 
 interface Results {
@@ -10,7 +10,9 @@ interface Results {
 
 const Form = () => {
   const [text, setText] = useState("");
-  const [series, setSeries] = useState([]);
+  const [series, setSeries] = useState(
+    JSON.parse(localStorage.getItem("series")!)
+  );
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setText(e.target.value);
@@ -26,21 +28,20 @@ const Form = () => {
       episode: 0,
     };
 
-    setSeries((current): any => [obj, ...current]);
-
+    setSeries((current: any): any => [obj, ...current]);
     setText("");
   };
 
   const increaseSeason = (id: string) => {
-    setSeries((current: any) =>
+    const increaseSeason = (current: any) =>
       current.map((item: Results) =>
         item.id === id ? { ...item, season: item.season + 1 } : item
-      )
-    );
+      );
+    setSeries(increaseSeason);
   };
 
   const decreaseSeason = (id: string) => {
-    setSeries((current: any) =>
+    const decreaseSeason = (current: any) =>
       current.map((item: Results) =>
         item.id === id
           ? {
@@ -48,20 +49,20 @@ const Form = () => {
               season: item.season <= 0 ? item.season : item.season - 1,
             }
           : item
-      )
-    );
+      );
+    setSeries(decreaseSeason);
   };
 
   const increaseEpisode = (id: string) => {
-    setSeries((current: any) =>
+    const increaseEpisode = (current: any) =>
       current.map((item: Results) =>
         item.id === id ? { ...item, episode: item.episode + 1 } : item
-      )
-    );
+      );
+    setSeries(increaseEpisode);
   };
 
   const decreaseEpisode = (id: string) => {
-    setSeries((current: any) =>
+    const deleteEpisode = (current: any) =>
       current.map((item: Results) =>
         item.id === id
           ? {
@@ -69,13 +70,24 @@ const Form = () => {
               episode: item.episode <= 0 ? item.episode : item.episode - 1,
             }
           : item
-      )
-    );
+      );
+    setSeries(deleteEpisode);
   };
 
   const deleteSeries = (id: string) => {
-    setSeries((current) => current.filter((item: Results) => item.id !== id));
+    const deleteSeries = (current: any) =>
+      current.filter((item: Results) => item.id !== id);
+    setSeries(deleteSeries);
   };
+
+  useEffect(() => {
+    localStorage.setItem("series", JSON.stringify(series));
+  }, [series]);
+
+  useEffect(() => {
+    const data = localStorage.getItem("series");
+    if (data) setSeries(JSON.parse(data));
+  }, []);
 
   return (
     <section>
