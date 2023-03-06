@@ -10,9 +10,7 @@ interface Results {
 
 const Form = () => {
   const [text, setText] = useState("");
-  const [series, setSeries] = useState(
-    JSON.parse(localStorage.getItem("series")!)
-  );
+  const [series, setSeries] = useState([]);
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setText(e.target.value);
@@ -28,7 +26,7 @@ const Form = () => {
       episode: 0,
     };
 
-    setSeries((current: any): any => [...current, obj]);
+    setSeries((current: any): any => [obj, ...current]);
     setText("");
   };
 
@@ -81,13 +79,17 @@ const Form = () => {
   };
 
   useEffect(() => {
-    localStorage.setItem("series", JSON.stringify(series));
+    if (series.length > 0) {
+      localStorage.setItem("series", JSON.stringify(series));
+    }
   }, [series]);
 
   useEffect(() => {
     const data = localStorage.getItem("series");
     if (data) setSeries(JSON.parse(data));
   }, []);
+
+  console.log(series);
 
   return (
     <section>
